@@ -36,7 +36,8 @@ class App extends Component {
 
     this.setState (
       {
-        autores : autores.filter((posAtual) => {
+        autores : autores.filter((autor, posAtual) => {
+          
           return posAtual !== index;
         }),
       }
