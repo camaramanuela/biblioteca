@@ -1,5 +1,10 @@
 import React, { Component, Fragment } from 'react';
 
+
+import 'materialize-css/dist/css/materialize.min.css';
+import './styles.css';
+
+import Header from './Header.js';
 import Tabela from './Tabela.js';
 import Formulario from './Formulario.js';
 
@@ -52,8 +57,11 @@ class App extends Component {
   render() {
     return (
       <Fragment >
-        <Tabela autores = { this.state.autores } removeAutor = { this.removeAutor } />
-        <Formulario escutadorDeSubmit = { this.escutadorDeSubmit } />
+        <Header />
+        <div className="container mt-10">
+          <Tabela autores = { this.state.autores } removeAutor = { this.removeAutor } />
+          <Formulario escutadorDeSubmit = { this.escutadorDeSubmit } />
+        </div>
       </Fragment>
     );  
   }
