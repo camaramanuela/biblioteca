@@ -7,6 +7,7 @@ import './styles.css';
 import Header from './Header.js';
 import Tabela from './Tabela.js';
 import Formulario from './Formulario.js';
+import PopUp from './PopUp.js'
 
 class App extends Component {
 
@@ -40,18 +41,18 @@ class App extends Component {
 
     const { autores } = this.state;
 
-    this.setState (
-      {
+    this.setState ({
         autores : autores.filter((autor, posAtual) => {
           
-          return posAtual !== index;
-        }),
-      }
-    )
+        return posAtual !== index;
+      }),
+    });
+    PopUp.exibeMensagem("error", "Item removido com sucesso");
   }
 
   escutadorDeSubmit = autor => {
-    this.setState({ autores : [...this.state.autores, autor] })
+    this.setState({ autores : [...this.state.autores, autor] });
+    PopUp.exibeMensagem("success", "Item adicionado com sucesso");
   }
  
   render() {
