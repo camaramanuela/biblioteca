@@ -1,48 +1,32 @@
 import React, { Component } from 'react';
 import DataTable from './DataTable';
+import ApiService from './ApiService'
 
 class Autores extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      autores: [
-        {
-          nome: 'Paulo',
-          livro: 'React',
-          preco: '1000'
-        },
-        {
-          nome: 'Daniel',
-          livro: 'Java',
-          preco: '99'
-        },
-        {
-          nome: 'Marcos',
-          livro: 'Design',
-          preco: '150'
-        },
-        {
-          nome: 'Bruno',
-          livro: 'DevOps',
-          preco: '100'
-        },
-        {
-          nome: 'Nico',
-          livro: 'Java',
-          preco: '9999'
-        }
-      ],
+      nomes: [],
       titulo: 'Autores'
     };
   }
+
+
+  componentDidMount() {
+    ApiService.ListaAutores()
+      .then (res => {
+        this.setState({ nomes: [...this.state.nomes, ...res.data] })
+      });
+  }
+
 
   render() {
     return (
       <div className='container'>
         <h1>Página de Autores</h1>
         <DataTable
-          dados={this.state.autores}
+          dados={this.state.nomes}
           titulo={this.state.titulo}
           colunas={['nome']} />
       </div>
