@@ -3,7 +3,7 @@ import Routes from "./Routes.js";
 
 import 'materialize-css/dist/css/materialize.min.css';
 import './styles.css';
-import Header from './Header.js';
+import Header from './components/header/Header.js';
 
 class App extends Component {
   render() {
