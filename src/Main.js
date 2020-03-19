@@ -16,41 +16,53 @@ export default class  Main extends Component {
 
 
   removeAutor = id => {
-
     const { autores } = this.state;
 
-    this.setState ({
-        autores : autores.filter((autor) => {
-          
-        return autor.id !== id;
-      }),
+    const autoresAtualizado = autores.filter (autor => {
+      return autor.id !== id;
     });
-    PopUp.exibeMensagem("success", "Item removido com sucesso");
-    ApiService.RemoveAutor(id);
+
+    ApiService.RemoveAutor(id)
+              .then(res => ApiService.TrataErros(res))
+              .then(res => {
+                 if (res.message === 'deleted') {
+                   this.setState({ autores: [...autoresAtualizado] });
+                   PopUp.exibeMensagem("success", "Item removido com sucesso");
+                 }
+              })
+              .catch(err => PopUp.exibeMensagem("error", "Erro na API ao tentar remover item"))
   }
+
 
   escutadorDeSubmit = autor => {
     ApiService.CriaAutor(JSON.stringify(autor))
-              .then(res => res.data)
-              .then(autor => {
-                this.setState({ autores : [...this.state.autores, autor] });
-                PopUp.exibeMensagem("success", "Item adicionado com sucesso");
-              });
+              .then(res => ApiService.TrataErros(res))
+              .then(res => {
+                if (res.message === 'success') {
+                  this.setState({ autores : [...this.state.autores, res.data] });
+                  PopUp.exibeMensagem("success", "Item adicionado com sucesso");
+                }
+              })
+              .catch(err => PopUp.exibeMensagem('error', "Erro na comunicação com a API ao tentar criar o item"));
   }
+  
+
 
   componentDidMount() {
     ApiService.ListaAutores()
-      .then (res => {
-        this.setState({ autores: [...this.state.autores, ...res.data] })
-      });
+              .then(res => ApiService.TrataErros(res))
+              .then (res => {
+                if ( res.message === 'success') {
+                  this.setState({ autores: [...this.state.autores, ...res.data] })
+                }
+              })
+              .catch(err => PopUp.exibeMensagem('error', "Erro na comunicação com a API ao tentar listar"))
   }
 
+
   render () {
-
-    ApiService.ListaLivros()
-      .then(res => console.log(res.data));
+    //ApiService.ListaLivros();
     
-
     return (
       <div className="container mt-10">
         <h1>Livraria</h1>
